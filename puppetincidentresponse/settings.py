@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if os.getenv("DJANGO_ENV") == "prod":
-    with open('/vault/secrets/django-secret-key.txt', 'r') as f:
+    with open('/vault/secrets/django-secret-key', 'r') as f:
         DJANGO_SECRET_KEY = f.read()
 else:
     SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'puppetincidentresponse.wsgi.application'
 
 
 if os.getenv("DJANGO_ENV") == "prod":
-    with open('/vault/secrets/database-url.txt', 'r') as f:
+    with open('/vault/secrets/database-url', 'r') as f:
         database_url = f.read()
     DATABASES = {'default': database_url}
 else:
@@ -167,9 +167,9 @@ RESPONSE_LOGIN_REQUIRED = True
 
 
 if os.getenv("DJANGO_ENV") == "prod":
-    with open('/vault/secrets/slack-token.txt', 'r') as f:
+    with open('/vault/secrets/slack-token', 'r') as f:
         SLACK_TOKEN = f.read()
-    with open('/vault/secrets/slack-signing-secret.txt', 'r') as f:
+    with open('/vault/secrets/slack-signing-secret', 'r') as f:
         SLACK_SIGNING_SECRET = f.read()
 else:
     SLACK_TOKEN = get_env_var("SLACK_TOKEN")
