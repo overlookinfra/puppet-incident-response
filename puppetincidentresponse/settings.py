@@ -21,7 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
+if os.getenv("DJANGO_ENV") == "prod":
+    with open('/vault/secrets/django-secret-key.txt', 'r') as f:
+        DJANGO_SECRET_KEY = f.read()
+else:
+    SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,8 +84,13 @@ WSGI_APPLICATION = 'puppetincidentresponse.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
+
+
 if os.getenv("DJANGO_ENV") == "prod":
-    DATABASES = {'default': env.db('DATABASE_URL')}
+    with open('/vault/secrets/database-url.txt', 'r') as f:
+        database_url = f.read()
+    DATABASES = {'default': database_url}
 else:
     DATABASES = {
         'default': {
@@ -155,8 +165,16 @@ MARKDOWN_FILTER_WHITELIST_STYLES = [
 
 RESPONSE_LOGIN_REQUIRED = True
 
-SLACK_TOKEN = get_env_var("SLACK_TOKEN")
-SLACK_SIGNING_SECRET = get_env_var("SLACK_SIGNING_SECRET")
+
+if os.getenv("DJANGO_ENV") == "prod":
+    with open('/vault/secrets/slack-token.txt', 'r') as f:
+        SLACK_TOKEN = f.read()
+    with open('/vault/secrets/slack-signing-secret.txt', 'r') as f:
+        SLACK_SIGNING_SECRET = f.read()
+else:
+    SLACK_TOKEN = get_env_var("SLACK_TOKEN")
+    SLACK_SIGNING_SECRET = get_env_var("SLACK_SIGNING_SECRET")
+
 INCIDENT_CHANNEL_NAME = get_env_var("INCIDENT_CHANNEL_NAME")
 INCIDENT_REPORT_CHANNEL_NAME = get_env_var("INCIDENT_REPORT_CHANNEL_NAME")
 INCIDENT_BOT_NAME = get_env_var("INCIDENT_BOT_NAME")
