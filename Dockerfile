@@ -7,7 +7,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 RUN mkdir -p /opt/app
 RUN mkdir -p /opt/app/pip_cache
-RUN mkdir -p /opt/app/martor_demo
+RUN mkdir -p /opt/app/puppet-incident-response
 COPY requirements.txt start-server.sh /opt/app/
 
 COPY . /opt/app/
