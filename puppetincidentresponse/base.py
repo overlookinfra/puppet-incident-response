@@ -17,6 +17,10 @@ def get_env_var(setting, warn_only=False):
 
     return value
 
-SLACK_TOKEN = get_env_var("SLACK_TOKEN")
+if get_env_var("DJANGO_ENV") == "prod":
+    with open('/vault/secrets/slack-token', 'r') as f:
+        SLACK_TOKEN = f.read()
+else:
+    SLACK_TOKEN = get_env_var("SLACK_TOKEN")
 SLACK_CLIENT = SlackClient(SLACK_TOKEN)
 
