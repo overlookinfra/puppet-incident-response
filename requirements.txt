@@ -5,3 +5,4 @@ django-bootstrap4
 psycopg2-binary==2.8.2
 django-incident-response
 gunicorn
+dj-database-url

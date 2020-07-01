@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from .base import SLACK_CLIENT, get_env_var
 
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -90,7 +92,9 @@ WSGI_APPLICATION = 'puppetincidentresponse.wsgi.application'
 if os.getenv("DJANGO_ENV") == "prod":
     with open('/vault/secrets/database-url', 'r') as f:
         database_url = f.read().rstrip('\n')
-    DATABASES = {'default': database_url}
+    DATABASES = {
+        'default': dj_database_url.config(default=database_url)
+    }
 else:
     DATABASES = {
         'default': {
