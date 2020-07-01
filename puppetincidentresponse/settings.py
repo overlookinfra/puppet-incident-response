@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 if os.getenv("DJANGO_ENV") == "prod":
     with open('/vault/secrets/django-secret-key', 'r') as f:
-        DJANGO_SECRET_KEY = f.read().rstrip('\n')
+        SECRET_KEY = f.read().rstrip('\n')
 else:
     SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
 
